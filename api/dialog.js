@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
   // --- Kapı kontrolü ---
   const ACCESS_KEY = process.env.ACCESS_KEY;
   const ALLOW_REF  = (process.env.ALLOWED_REFERER || '').trim();
-  const key        = req.headers['x-access-key'] || '';
+  const key        = req.headers['x-access-key'] || req.query.key || '';
   const referer    = req.headers['referer'] || req.headers['origin'] || '';
   const keyOk = ACCESS_KEY && key === ACCESS_KEY;
   const refOk = ALLOW_REF && referer.startsWith(ALLOW_REF);
