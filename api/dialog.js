@@ -4,9 +4,9 @@
 // code -> o koda kayıtlı hedef JSON linki -> sunucu çekip döndürür.
 //
 // Vercel Environment Variables:
-//   ACCESS_KEY        uygulamanın gönderdiği gizli anahtar
-//   GH_OWNER          github kullanıcı adın
-//   GH_REPO           repo adı (private)
+//   ACCESS_KEY        1a2b3c4d5e6f7g8h9
+//   GH_OWNER          darkneslord19
+//   GH_REPO           Hide
 //   GH_PATH           dosya yolu (varsayılan: links.json)
 //   GH_TOKEN          ghp_... token (sadece sunucuda, asla uygulamada değil)
 //   ALLOWED_REFERER   (opsiyonel)
