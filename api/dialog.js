@@ -1,15 +1,12 @@
 // /api/dialog?code=XXXX
 // Kapı: x-access-key (veya izinli referer) yoksa 401.
-// Link haritası, PRIVATE GitHub repo'daki links.json'dan okunur (token sunucuda).
-// code -> o koda kayıtlı hedef JSON linki -> sunucu çekip döndürür.
+// links.json PUBLIC repodan token'sız okunur. code -> hedef JSON -> sunucu çekip döndürür.
 //
 // Vercel Environment Variables:
-//   ACCESS_KEY        1a2b3c4d5e6f7g8h9
-//   GH_OWNER          darkneslord19
-//   GH_REPO           Hide
-//   GH_PATH           dosya yolu (varsayılan: links.json)
-//   GH_TOKEN          ghp_... token (sadece sunucuda, asla uygulamada değil)
-//   ALLOWED_REFERER   (opsiyonel)
+//   ACCESS_KEY       uygulamanın gönderdiği gizli anahtar (zorunlu)
+//   LINKS_URL        links.json'un raw linki, örn:
+//                    https://raw.githubusercontent.com/ADIN/REPO/main/links.json
+//   ALLOWED_REFERER  (opsiyonel)
 
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
@@ -30,17 +27,13 @@ module.exports = async (req, res) => {
   const code = String(req.query.code || '').trim();
   if (!code) return res.status(400).json({ error: 'no_code' });
 
-  // --- Link haritasını private repodan oku ---
-  const { GH_OWNER, GH_REPO, GH_TOKEN } = process.env;
-  const GH_PATH = process.env.GH_PATH || 'links.json';
+  // --- Link haritasını public repodan oku (token yok) ---
+  const LINKS_URL = process.env.LINKS_URL;
   let map;
   try {
-    const r = await fetch(
-      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`,
-      { headers: { Authorization: `Bearer ${GH_TOKEN}`, Accept: 'application/vnd.github.raw+json' }, cache: 'no-store' }
-    );
+    const r = await fetch(LINKS_URL, { cache: 'no-store' });
     if (!r.ok) return res.status(502).json({ error: 'map_error', status: r.status });
-    map = JSON.parse(await r.text());
+    map = await r.json();
   } catch (e) {
     return res.status(502).json({ error: 'map_parse' });
   }
