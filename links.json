@@ -4,6 +4,11 @@
       "name": "sikerler",
       "url": "https://raw.githubusercontent.com/darkneslord19/Dark/main/updates.json",
       "enabled": true
+    },
+    "Se1": {
+      "name": "Ee1",
+      "url": "https://raw.githubusercontent.com/darkneslord19/Dark/main/updates.json",
+      "enabled": true
     }
   }
 }
